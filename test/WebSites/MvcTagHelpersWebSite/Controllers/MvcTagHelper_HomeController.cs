@@ -12,22 +12,24 @@ namespace MvcTagHelpersWebSite.Controllers
 {
     public class MvcTagHelper_HomeController : Controller
     {
-        public IActionResult Order()
-        {
-            var products = new List<Product>();
-            products = new List<Product>();
+        private readonly List<Product> _products = new List<Product>();
 
+        public MvcTagHelper_HomeController()
+        {
             for (int i = 7; i < 13; ++i)
             {
-                products.Add(new Product()
+                _products.Add(new Product()
                 {
                     ProductName = "Product_" + i,
                     Number = i,
                     PartNumbers = Enumerable.Range(1, 3).Select(n => string.Format("{0}-{1}", i, n))
                 });
             }
+        }
 
-            ViewBag.Items = new SelectList(products, "Number", "ProductName", 9);
+        public IActionResult Order()
+        {
+            ViewBag.Items = new SelectList(_products, "Number", "ProductName", 9);
 
             var order = new Order()
             {
@@ -69,6 +71,53 @@ namespace MvcTagHelpersWebSite.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult ProductEdit()
+        {
+            ViewBag.Items = _products;
+
+            return View();
+        }
+
+        public IActionResult Employee()
+        {
+            var employees = new List<Employee>();
+
+            for (int i = 1; i < 5; ++i)
+            {
+                employees.Add(new Employee()
+                {
+                    Name = "EmployeeName_" + i,
+                    Number = i
+                });
+            }
+
+            return View(employees);
+        }
+
+        public IActionResult WarehouseProduct()
+        {
+            ViewBag.Items = new SelectList(_products, "Number", "ProductName", 9);
+
+            return View();
+        }
+
+        public IActionResult WarehouseEmployee()
+        {
+            var warehouse = new Warehouse()
+            {
+                City = "City_1",
+                Employee = new Employee()
+                {
+                    Name = "EmployeeName_1",
+                    Number = 1,
+                    Address = "Address_1",
+                    Phone = "PhoneNumber_1",
+                    Gender = Gender.Female
+                }
+            };
+            return View(warehouse);
         }
     }
 }
