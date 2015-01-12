@@ -1,8 +1,5 @@
 ﻿@using MvcTagHelpersWebSite.Models
-
-@{
-    var products = (IEnumerable<Product>)ViewBag.Items;
-}
+@model IEnumerable<Product>
 
 @addtaghelper "Microsoft.AspNet.Mvc.TagHelpers"
 
@@ -13,7 +10,7 @@
 <body>
     @using (@Html.BeginForm("Index", "MvcTagHelper_Product", FormMethod.Post))
     {
-        @foreach (var product in products)
+        @foreach (var product in Model)
         {
             @await Html.PartialAsync("_ProductPartial", product)
         }
